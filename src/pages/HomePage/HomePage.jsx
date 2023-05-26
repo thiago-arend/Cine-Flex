@@ -13,6 +13,7 @@ export default function HomePage() {
     useEffect(() => {
         // dispara requisição buscando filmes
         const promise = axios.get(URL_GET_MOVIES);
+        // quando chegar resposta, atualiza estado dos movies
         promise.then((res) => setMovies(res.data));
         promise.catch((err) => console.log(err.response));
     }, []);

@@ -1,49 +1,65 @@
-import { useParams } from "react-router-dom"
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom"
 import styled from "styled-components"
+import Loading from "../../components/Loading"
+import { URL_GET_MOVIE_SESSIONS } from "../../apiConstants"
+import axios from "axios"
+import { useEffect } from "react";
 
 export default function SessionsPage() {
-    const params = useParams();
+    const [movie, setMovie] = useState(null);
+    const { idFilme } = useParams();
 
-    console.log(params);
+    useEffect(() => {
+        const promise = axios.get(URL_GET_MOVIE_SESSIONS.replace("ID_DO_FILME", idFilme));
+        promise.then((res) => {
+            console.log(res.data);
+            setMovie(res.data)
+        });
+        promise.catch((err) => console.log(err.response));
+    }, []);
 
     return (
         <PageContainer>
-            Selecione o horário
-            <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+            {
+                (movie !== null) ?
+                    <>
+                        Selecione o horário
+                        <div>
+                            {movie.days.map(d => {
+                                const { id, weekday, date, showtimes } = d;
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+                                return (
+                                    <SessionContainer key={id}>
+                                        {weekday} - {date}
+                                        <ButtonsContainer>
+                                            {
+                                                showtimes.map(st => {
+                                                    return (
+                                                        <Link to={`/assentos/${st.id}`} key={st.id} >
+                                                            <button>{st.name}</button>
+                                                        </Link>
+                                                    )
+                                                })
+                                            }
+                                        </ButtonsContainer>
+                                    </SessionContainer>
+                                )
+                            })}
+                        </div>
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-            </div>
-
-            <FooterContainer>
-                <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
-                </div>
-                <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                </div>
-            </FooterContainer>
-
+                        <FooterContainer>
+                            <div>
+                                <img src={movie.posterURL} alt="poster" />
+                            </div>
+                            <div>
+                                <p>{movie.title}</p>
+                            </div>
+                        </FooterContainer>
+                    </>
+                    :
+                    <Loading />
+            }
         </PageContainer>
     )
 }

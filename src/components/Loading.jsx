@@ -3,12 +3,6 @@ import loadingIcon from "../assets/loading_icon.gif"
 
 export default function Loading() {
     return (
-        <LoadingContainer>
-            <img src={loadingIcon} />
-        </LoadingContainer>
+        <img src={loadingIcon} />
     );
 }
-
-const LoadingContainer = styled.div`
-    margin: 0;
-`;

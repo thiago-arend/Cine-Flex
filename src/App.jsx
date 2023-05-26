@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import ResetStyle from "./style/ResetStyle"
+import GlobalStyle from "./style/GlobalStyle"
 import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
@@ -13,7 +14,7 @@ export default function App() {
     return (
         <>
             <ResetStyle />
-
+            <GlobalStyle />
             <BrowserRouter>
                 <NavContainer>CINEFLEX</NavContainer>
                 <Routes>
