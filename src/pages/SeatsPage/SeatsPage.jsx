@@ -1,33 +1,79 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components"
+import axios from "axios"
+import { URL_GET_SESSION_SEATS } from "../../apiConstants";
+import Loading from "../../components/Loading";
+import ASSENTOS from "../../mockAssentos";
 
 export default function SeatsPage() {
+    const [session, setSession] = useState(null);
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    console.log(selectedSeats);
     const {idSessao} = useParams();
-    console.log(idSessao);
+
+    useEffect(() => {
+        // const promise = axios.get(URL_GET_SESSION_SEATS.replace("ID_DA_SESSAO", idSessao));
+        // promise.then((res) => {
+        //     setSession(res.data);
+        //     console.log(res.data);
+        // });
+        // promise.catch((err) => console.log(err.response));
+
+        setSession(ASSENTOS);
+    }, []);
+
+    function selecionarAssento(id, disponivel) {
+        if (!disponivel) {
+            alert("Esse assento não está disponível");
+            return;
+        }
+
+        let novoArray = [];
+        if (selectedSeats.includes(id)) { // se o assento já foi selecionado
+            console.log('ja selecioado');
+            novoArray = selectedSeats.filter(sId => sId !== id); // remove dos selecionados
+        }
+        else {
+            novoArray = [...selectedSeats, id]; // acrescenta nos selecionados
+        }
+        setSelectedSeats(novoArray); // atualiza o vetor de selecionados
+    }
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+                {
+                (session !== null)
+                ?
+                (session.seats.map(s => (
+                    <SeatItem
+                        onClick={() => selecionarAssento(s.id, s.isAvailable)}
+                        isSelected={selectedSeats.includes(s.id)}
+                        isAvailable={ s.isAvailable ? true : false }
+                        key={s.id} >
+                        {s.name}
+                    </SeatItem>
+                )))
+                :
+                <Loading />
+                }
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="#1AAE9E" borderColor="#0E7D71" />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="#C3CFD9" borderColor="#7B8B99" />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="#FBE192" borderColor="#F7C52B" />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -43,13 +89,23 @@ export default function SeatsPage() {
             </FormContainer>
 
             <FooterContainer>
-                <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
-                </div>
-                <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
-                </div>
+                {
+                    (session !== null)
+                    ?
+                    (
+                    <>
+                    <div>
+                        <img src={session.movie.posterURL} alt="poster" />
+                    </div>
+                    <div>
+                        <p>{session.movie.title}</p>
+                        <p>{session.day.weekday} - {session.date}</p>
+                    </div>
+                    </>
+                    )
+                    :
+                    <Loading />
+                }
             </FooterContainer>
 
         </PageContainer>
@@ -99,8 +155,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: ${`1px solid ${props => props.borderColor}`};
+    background-color: ${props => props.color};
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -116,8 +172,34 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: ${`1px solid ${props => {
+        const {isAvailable, isSelected} = props;
+        if (isSelected) {
+            return "#0E7D71";
+        }
+
+        if (isAvailable) {
+            return "#7B8B99";
+        }
+        else {
+            return "#F7C52B";
+        }
+    }}`};
+
+    background-color: ${props => {
+        const {isAvailable, isSelected} = props;
+        if (isSelected) {
+            return "#1AAE9E";
+        }
+
+        if (isAvailable) {
+            return "#C3CFD9";
+        }
+        else {
+            return "#FBE192";
+        }
+    }};
+
     height: 25px;
     width: 25px;
     border-radius: 25px;
