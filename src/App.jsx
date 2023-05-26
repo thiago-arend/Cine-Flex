@@ -5,8 +5,11 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import axios from "axios"
 
 export default function App() {
+    axios.defaults.headers.common['Authorization'] = 'pwt7EhhzeXUgaaubWqP8XRRT';
+
     return (
         <>
             <ResetStyle />

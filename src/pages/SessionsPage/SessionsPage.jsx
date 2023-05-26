@@ -1,6 +1,10 @@
+import { useParams } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SessionsPage() {
+    const params = useParams();
+
+    console.log(params);
 
     return (
         <PageContainer>
