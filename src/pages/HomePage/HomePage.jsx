@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { URL_GET_MOVIES } from "../../apiConstants";
 
 export default function HomePage() {
     return (
