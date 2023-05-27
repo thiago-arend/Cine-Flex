@@ -24,7 +24,7 @@ export default function SuccessPage() {
             <TextContainer>
                 <strong><p>Comprador</p></strong>
                 <p>Nome: {comprador}</p>
-                <p>CPF: {cpf}</p>
+                <p>{`CPF: ${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9)}`}</p>
             </TextContainer>
 
             <Link to="/">
