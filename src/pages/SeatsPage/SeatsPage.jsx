@@ -1,27 +1,32 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios"
-import { URL_GET_SESSION_SEATS } from "../../apiConstants";
+import { URL_GET_SESSION_SEATS, URL_RESERVE_SEATS } from "../../apiConstants";
 import Loading from "../../components/Loading";
 import ASSENTOS from "../../mockAssentos";
 
 export default function SeatsPage() {
-    const [session, setSession] = useState(null);
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    console.log(selectedSeats);
     const {idSessao} = useParams();
 
-    useEffect(() => {
-        // const promise = axios.get(URL_GET_SESSION_SEATS.replace("ID_DA_SESSAO", idSessao));
-        // promise.then((res) => {
-        //     setSession(res.data);
-        //     console.log(res.data);
-        // });
-        // promise.catch((err) => console.log(err.response));
+    const [session, setSession] = useState(null);
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [formData, setFormData] = useState({name: "", cpf: ""});
 
-        setSession(ASSENTOS);
+    console.log('seatsPage', session);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        /*
+        const promise = axios.get(URL_GET_SESSION_SEATS.replace("ID_DA_SESSAO", idSessao));
+        promise.then((res) => {
+            setSession(res.data);
+        });
+         promise.catch((err) => console.log(err.response));
+        */
+        setSession(ASSENTOS)
     }, []);
 
     function selecionarAssento(id, disponivel) {
@@ -32,13 +37,59 @@ export default function SeatsPage() {
 
         let novoArray = [];
         if (selectedSeats.includes(id)) { // se o assento já foi selecionado
-            console.log('ja selecioado');
             novoArray = selectedSeats.filter(sId => sId !== id); // remove dos selecionados
         }
         else {
             novoArray = [...selectedSeats, id]; // acrescenta nos selecionados
         }
         setSelectedSeats(novoArray); // atualiza o vetor de selecionados
+    }
+
+    function handleChange(e) {
+        const dados = {...formData};
+        dados[e.target.name] = e.target.value;
+        setFormData(dados);
+    }
+
+    function preparaObjetoSucesso() {
+        const { name: horario} = session;
+        const { title: filme } = session.movie;
+        const { weekday: semana, date: data } = session.day;
+        const assentos = session.seats.filter(seat => selectedSeats.includes(seat.id)).
+            map(s => s.name);
+        const comprador = formData.name;
+        const cpf = formData.cpf;
+
+        const sucessoObjct = {
+            filme,
+            horario,
+            semana,
+            data,
+            assentos,
+            comprador,
+            cpf
+        };
+
+        return sucessoObjct;
+    }
+
+    function reservarAssentos(e) {
+        e.preventDefault();
+        const reserva = {
+            ids: selectedSeats,
+            name: formData.name,
+            cpf: formData.cpf
+        }
+
+        const promise = axios.post(URL_RESERVE_SEATS, reserva);
+        promise.then((res) => {
+            // preparar informações para o envio pela rota
+            preparaObjetoSucesso();
+
+            // altera a rota, enviando objeto
+            navigate("/sucesso", { state: preparaObjetoSucesso() })
+        });
+        promise.catch((err) => console.log(err.response));
     }
 
     return (
@@ -51,11 +102,11 @@ export default function SeatsPage() {
                 ?
                 (session.seats.map(s => (
                     <SeatItem
-                        onClick={() => selecionarAssento(s.id, s.isAvailable)}
-                        isSelected={selectedSeats.includes(s.id)}
+                        onClick={ () => selecionarAssento(s.id, s.isAvailable) }
+                        isSelected={ selectedSeats.includes(s.id) }
                         isAvailable={ s.isAvailable ? true : false }
-                        key={s.id} >
-                        {s.name}
+                        key={ s.id } >
+                            {s.name}
                     </SeatItem>
                 )))
                 :
@@ -79,13 +130,31 @@ export default function SeatsPage() {
             </CaptionContainer>
 
             <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+                <form onSubmit={ reservarAssentos }>
+                    <label htmlFor="name">Nome do Comprador:</label>
+                    <input
+                        required
+                        onChange={ handleChange }
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        placeholder="Digite seu nome..."
+                        value={formData.name} />
 
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                    <label htmlFor="cpf">CPF do Comprador:</label>
+                    <input 
+                        required
+                        onChange={ handleChange }
+                        type="text"
+                        id="cpf"
+                        name="cpf"
+                        placeholder="Digite seu CPF..."
+                        minLength="11"
+                        maxLength="11"
+                        value={formData.cpf} />
 
-                <button>Reservar Assento(s)</button>
+                    <button type="submit">Reservar Assento(s)</button>
+                </form>
             </FormContainer>
 
             <FooterContainer>
@@ -99,7 +168,7 @@ export default function SeatsPage() {
                     </div>
                     <div>
                         <p>{session.movie.title}</p>
-                        <p>{session.day.weekday} - {session.date}</p>
+                        <p>{session.day.weekday} - {session.day.date}</p>
                     </div>
                     </>
                     )
