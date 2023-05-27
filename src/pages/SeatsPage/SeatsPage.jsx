@@ -8,13 +8,11 @@ import Loading from "../../components/Loading";
 import ASSENTOS from "../../mockAssentos";
 
 export default function SeatsPage() {
-    const {idSessao} = useParams();
+    const { idSessao } = useParams();
 
     const [session, setSession] = useState(null);
     const [selectedSeats, setSelectedSeats] = useState([]);
-    const [formData, setFormData] = useState({name: "", cpf: ""});
-
-    console.log('seatsPage', session);
+    const [formData, setFormData] = useState({ name: "", cpf: "" });
 
     const navigate = useNavigate();
 
@@ -46,15 +44,15 @@ export default function SeatsPage() {
     }
 
     function handleChange(e) {
-        const dados = {...formData};
+        const dados = { ...formData };
         dados[e.target.name] = e.target.value;
         setFormData(dados);
     }
 
     function preparaObjetoSucesso() {
-        const { name: horario} = session;
+        const { name: horario } = session;
         const { title: filme } = session.movie;
-        const { weekday: semana, date: data } = session.day;
+        const { date: data } = session.day;
         const assentos = session.seats.filter(seat => selectedSeats.includes(seat.id)).
             map(s => s.name);
         const comprador = formData.name;
@@ -63,7 +61,6 @@ export default function SeatsPage() {
         const sucessoObjct = {
             filme,
             horario,
-            semana,
             data,
             assentos,
             comprador,
@@ -92,77 +89,73 @@ export default function SeatsPage() {
         promise.catch((err) => console.log(err.response));
     }
 
-    return (
-        <PageContainer>
-            Selecione o(s) assento(s)
+    if (session !== null)
+        return (
+            <PageContainer>
+                Selecione o(s) assento(s)
 
-            <SeatsContainer>
-                {
-                (session !== null)
-                ?
-                (session.seats.map(s => (
-                    <SeatItem
-                        onClick={ () => selecionarAssento(s.id, s.isAvailable) }
-                        isSelected={ selectedSeats.includes(s.id) }
-                        isAvailable={ s.isAvailable ? true : false }
-                        key={ s.id } >
-                            {s.name}
-                    </SeatItem>
-                )))
-                :
-                <Loading />
-                }
-            </SeatsContainer>
+                <SeatsContainer>
+                    {
+                        (session !== null)
+                            ?
+                            (session.seats.map(s => (
+                                <SeatItem
+                                    onClick={() => selecionarAssento(s.id, s.isAvailable)}
+                                    isSelected={selectedSeats.includes(s.id)}
+                                    isAvailable={s.isAvailable ? true : false}
+                                    key={s.id} >
+                                    {s.name}
+                                </SeatItem>
+                            )))
+                            :
+                            <Loading />
+                    }
+                </SeatsContainer>
 
-            <CaptionContainer>
-                <CaptionItem>
-                    <CaptionCircle color="#1AAE9E" borderColor="#0E7D71" />
-                    Selecionado
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle color="#C3CFD9" borderColor="#7B8B99" />
-                    Disponível
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle color="#FBE192" borderColor="#F7C52B" />
-                    Indisponível
-                </CaptionItem>
-            </CaptionContainer>
+                <CaptionContainer>
+                    <CaptionItem>
+                        <CaptionCircle color="#1AAE9E" borderColor="#0E7D71" />
+                        Selecionado
+                    </CaptionItem>
+                    <CaptionItem>
+                        <CaptionCircle color="#C3CFD9" borderColor="#7B8B99" />
+                        Disponível
+                    </CaptionItem>
+                    <CaptionItem>
+                        <CaptionCircle color="#FBE192" borderColor="#F7C52B" />
+                        Indisponível
+                    </CaptionItem>
+                </CaptionContainer>
 
-            <FormContainer>
-                <form onSubmit={ reservarAssentos }>
-                    <label htmlFor="name">Nome do Comprador:</label>
-                    <input
-                        required
-                        onChange={ handleChange }
-                        type="text" 
-                        id="name" 
-                        name="name" 
-                        placeholder="Digite seu nome..."
-                        value={formData.name} />
+                <FormContainer>
+                    <form onSubmit={reservarAssentos}>
+                        <label htmlFor="name">Nome do Comprador:</label>
+                        <input
+                            required
+                            onChange={handleChange}
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Digite seu nome..."
+                            value={formData.name} />
 
-                    <label htmlFor="cpf">CPF do Comprador:</label>
-                    <input 
-                        required
-                        onChange={ handleChange }
-                        type="text"
-                        id="cpf"
-                        name="cpf"
-                        placeholder="Digite seu CPF..."
-                        minLength="11"
-                        maxLength="11"
-                        value={formData.cpf} />
+                        <label htmlFor="cpf">CPF do Comprador:</label>
+                        <input
+                            required
+                            onChange={handleChange}
+                            type="text"
+                            id="cpf"
+                            name="cpf"
+                            placeholder="Digite seu CPF..."
+                            minLength="11"
+                            maxLength="11"
+                            value={formData.cpf} />
 
-                    <button type="submit">Reservar Assento(s)</button>
-                </form>
-            </FormContainer>
+                        <button type="submit">Reservar Assento(s)</button>
+                    </form>
+                </FormContainer>
 
-            <FooterContainer>
-                {
-                    (session !== null)
-                    ?
-                    (
-                    <>
+                <FooterContainer>
                     <div>
                         <img src={session.movie.posterURL} alt="poster" />
                     </div>
@@ -170,15 +163,12 @@ export default function SeatsPage() {
                         <p>{session.movie.title}</p>
                         <p>{session.day.weekday} - {session.day.date}</p>
                     </div>
-                    </>
-                    )
-                    :
-                    <Loading />
-                }
-            </FooterContainer>
+                </FooterContainer>
 
-        </PageContainer>
-    )
+            </PageContainer>
+        )
+    
+    return <Loading />
 }
 
 const PageContainer = styled.div`
@@ -242,7 +232,7 @@ const CaptionItem = styled.div`
 `
 const SeatItem = styled.div`
     border: ${`1px solid ${props => {
-        const {isAvailable, isSelected} = props;
+        const { isAvailable, isSelected } = props;
         if (isSelected) {
             return "#0E7D71";
         }
@@ -256,7 +246,7 @@ const SeatItem = styled.div`
     }}`};
 
     background-color: ${props => {
-        const {isAvailable, isSelected} = props;
+        const { isAvailable, isSelected } = props;
         if (isSelected) {
             return "#1AAE9E";
         }

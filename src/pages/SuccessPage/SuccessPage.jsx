@@ -3,8 +3,7 @@ import styled from "styled-components"
 
 export default function SuccessPage() {
     const location = useLocation();
-    const {filme, horario, semana, data, assentos, comprador, cpf} = location.state;
-    console.log(assentos);
+    const {filme, horario, data, assentos, comprador, cpf} = location.state;
 
     return (
         <PageContainer>

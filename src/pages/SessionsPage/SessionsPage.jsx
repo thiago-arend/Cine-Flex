@@ -12,56 +12,51 @@ export default function SessionsPage() {
 
     useEffect(() => {
         const promise = axios.get(URL_GET_MOVIE_SESSIONS.replace("ID_DO_FILME", idFilme));
-        promise.then((res) => {
-            console.log(res.data);
-            setMovie(res.data)
-        });
+        promise.then((res) => setMovie(res.data));
         promise.catch((err) => console.log(err.response));
     }, []);
 
-    return (
-        <PageContainer>
-            {
-                (movie !== null) ?
-                    <>
-                        Selecione o horário
-                        <div>
-                            {movie.days.map(d => {
-                                const { id, weekday, date, showtimes } = d;
+    if (movie !== null)
+        return (
+            <PageContainer>
 
-                                return (
-                                    <SessionContainer key={id}>
-                                        {weekday} - {date}
-                                        <ButtonsContainer>
-                                            {
-                                                showtimes.map(st => {
-                                                    return (
-                                                        <Link to={`/assentos/${st.id}`} key={st.id} >
-                                                            <button>{st.name}</button>
-                                                        </Link>
-                                                    )
-                                                })
-                                            }
-                                        </ButtonsContainer>
-                                    </SessionContainer>
-                                )
-                            })}
-                        </div>
+                Selecione o horário
+                <div>
+                    {movie.days.map(d => {
+                        const { id, weekday, date, showtimes } = d;
 
-                        <FooterContainer>
-                            <div>
-                                <img src={movie.posterURL} alt="poster" />
-                            </div>
-                            <div>
-                                <p>{movie.title}</p>
-                            </div>
-                        </FooterContainer>
-                    </>
-                    :
-                    <Loading />
-            }
-        </PageContainer>
-    )
+                        return (
+                            <SessionContainer key={id}>
+                                {weekday} - {date}
+                                <ButtonsContainer>
+                                    {
+                                        showtimes.map(st => {
+                                            return (
+                                                <Link to={`/assentos/${st.id}`} key={st.id} >
+                                                    <button>{st.name}</button>
+                                                </Link>
+                                            )
+                                        })
+                                    }
+                                </ButtonsContainer>
+                            </SessionContainer>
+                        )
+                    })}
+                </div>
+
+                <FooterContainer>
+                    <div>
+                        <img src={movie.posterURL} alt="poster" />
+                    </div>
+                    <div>
+                        <p>{movie.title}</p>
+                    </div>
+                </FooterContainer>
+
+            </PageContainer>
+        )
+    
+    return <Loading />
 }
 
 const PageContainer = styled.div`

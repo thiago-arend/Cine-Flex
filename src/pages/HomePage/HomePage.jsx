@@ -18,26 +18,23 @@ export default function HomePage() {
         promise.catch((err) => console.log(err.response));
     }, []);
 
-    return (
-        <PageContainer>
-            Selecione o filme
+        if (movies !== null)
+            return <PageContainer>
+                Selecione o filme
 
-            <ListContainer width={(movies !== null) ? "330px" : "inherit"}>
-                {
-                    (movies !== null)
-                        ?
-                        movies.map(m => (
-                            <Link to={`/sessoes/${m.id}`} key={m.id} >
-                                <Movie posterURL={m.posterURL} />
-                            </Link>
-                        ))
-                        :
-                        <Loading />
-                }
-            </ListContainer>
+                <ListContainer width={(movies !== null) ? "330px" : "inherit"}>
+                    {
+                            movies.map(m => (
+                                <Link to={`/sessoes/${m.id}`} key={m.id} >
+                                    <Movie posterURL={m.posterURL} />
+                                </Link>
+                            ))
+                    }
+                </ListContainer>
 
-        </PageContainer>
-    )
+            </PageContainer>
+            
+        return <Loading />
 }
 
 const PageContainer = styled.div`
