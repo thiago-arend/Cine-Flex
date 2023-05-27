@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Movie from "../../components/Movie";
 import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
+import NavigationMenu from "../../components/NavigationMenu";
 
 export default function HomePage() {
     const [movies, setMovies] = useState(null);
@@ -18,23 +19,26 @@ export default function HomePage() {
         promise.catch((err) => console.log(err.response));
     }, []);
 
-        if (movies !== null)
-            return <PageContainer>
+    if (movies !== null)
+        return <>
+            <NavigationMenu />
+            <PageContainer>
                 Selecione o filme
 
-                <ListContainer width={(movies !== null) ? "330px" : "inherit"}>
+                <ListContainer>
                     {
-                            movies.map(m => (
-                                <Link to={`/sessoes/${m.id}`} key={m.id} >
-                                    <Movie posterURL={m.posterURL} />
-                                </Link>
-                            ))
+                        movies.map(m => (
+                            <Link to={`/sessoes/${m.id}`} key={m.id} >
+                                <Movie posterURL={m.posterURL} />
+                            </Link>
+                        ))
                     }
                 </ListContainer>
 
             </PageContainer>
-            
-        return <Loading />
+        </>
+
+    return <Loading />
 }
 
 const PageContainer = styled.div`
@@ -49,7 +53,7 @@ const PageContainer = styled.div`
     padding-top: 70px;
 `
 const ListContainer = styled.div`
-    width: ${props => props.width};
+    width: 330px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;

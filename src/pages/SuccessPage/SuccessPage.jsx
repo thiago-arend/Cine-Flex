@@ -1,35 +1,39 @@
 import { Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
+import NavigationMenu from "../../components/NavigationMenu";
 
 export default function SuccessPage() {
     const location = useLocation();
-    const {filme, horario, data, assentos, comprador, cpf} = location.state;
+    const { filme, horario, data, assentos, comprador, cpf } = location.state;
 
     return (
-        <PageContainer>
-            <h1>Pedido feito <br /> com sucesso!</h1>
+        <>
+            <NavigationMenu />
+            <PageContainer>
+                <h1>Pedido feito <br /> com sucesso!</h1>
 
-            <TextContainer>
-                <strong><p>Filme e sessão</p></strong>
-                <p>{filme}</p>
-                <p>{data} - {horario}</p>
-            </TextContainer>
+                <TextContainer>
+                    <strong><p>Filme e sessão</p></strong>
+                    <p>{filme}</p>
+                    <p>{data} - {horario}</p>
+                </TextContainer>
 
-            <TextContainer>
-                <strong><p>Ingressos</p></strong>
-                {assentos.map(n => <p key={n}>Assento {n}</p>)}
-            </TextContainer>
+                <TextContainer>
+                    <strong><p>Ingressos</p></strong>
+                    {assentos.map(n => <p key={n}>Assento {n}</p>)}
+                </TextContainer>
 
-            <TextContainer>
-                <strong><p>Comprador</p></strong>
-                <p>Nome: {comprador}</p>
-                <p>{`CPF: ${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9)}`}</p>
-            </TextContainer>
+                <TextContainer>
+                    <strong><p>Comprador</p></strong>
+                    <p>Nome: {comprador}</p>
+                    <p>{`CPF: ${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9)}`}</p>
+                </TextContainer>
 
-            <Link to="/">
-                <button>Voltar para Home</button>
-            </Link>
-        </PageContainer>
+                <Link to="/">
+                    <button>Voltar para Home</button>
+                </Link>
+            </PageContainer>
+        </>
     )
 }
 

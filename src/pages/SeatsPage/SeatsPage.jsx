@@ -6,6 +6,7 @@ import axios from "axios"
 import { URL_GET_SESSION_SEATS, URL_RESERVE_SEATS } from "../../apiConstants";
 import Loading from "../../components/Loading";
 import ASSENTOS from "../../mockAssentos";
+import NavigationMenu from "../../components/NavigationMenu";
 
 export default function SeatsPage() {
     const { idSessao } = useParams();
@@ -91,83 +92,86 @@ export default function SeatsPage() {
 
     if (session !== null)
         return (
-            <PageContainer>
-                Selecione o(s) assento(s)
+            <>
+                <NavigationMenu />
+                <PageContainer>
+                    Selecione o(s) assento(s)
 
-                <SeatsContainer>
-                    {
-                        (session !== null)
-                            ?
-                            (session.seats.map(s => (
-                                <SeatItem
-                                    onClick={() => selecionarAssento(s.id, s.isAvailable)}
-                                    isSelected={selectedSeats.includes(s.id)}
-                                    isAvailable={s.isAvailable ? true : false}
-                                    key={s.id} >
-                                    {s.name}
-                                </SeatItem>
-                            )))
-                            :
-                            <Loading />
-                    }
-                </SeatsContainer>
+                    <SeatsContainer>
+                        {
+                            (session !== null)
+                                ?
+                                (session.seats.map(s => (
+                                    <SeatItem
+                                        onClick={() => selecionarAssento(s.id, s.isAvailable)}
+                                        isSelected={selectedSeats.includes(s.id)}
+                                        isAvailable={s.isAvailable ? true : false}
+                                        key={s.id} >
+                                        {s.name}
+                                    </SeatItem>
+                                )))
+                                :
+                                <Loading />
+                        }
+                    </SeatsContainer>
 
-                <CaptionContainer>
-                    <CaptionItem>
-                        <CaptionCircle color="#1AAE9E" borderColor="#0E7D71" />
-                        Selecionado
-                    </CaptionItem>
-                    <CaptionItem>
-                        <CaptionCircle color="#C3CFD9" borderColor="#7B8B99" />
-                        Disponível
-                    </CaptionItem>
-                    <CaptionItem>
-                        <CaptionCircle color="#FBE192" borderColor="#F7C52B" />
-                        Indisponível
-                    </CaptionItem>
-                </CaptionContainer>
+                    <CaptionContainer>
+                        <CaptionItem>
+                            <CaptionCircle color="#1AAE9E" borderColor="#0E7D71" />
+                            Selecionado
+                        </CaptionItem>
+                        <CaptionItem>
+                            <CaptionCircle color="#C3CFD9" borderColor="#7B8B99" />
+                            Disponível
+                        </CaptionItem>
+                        <CaptionItem>
+                            <CaptionCircle color="#FBE192" borderColor="#F7C52B" />
+                            Indisponível
+                        </CaptionItem>
+                    </CaptionContainer>
 
-                <FormContainer>
-                    <form onSubmit={reservarAssentos}>
-                        <label htmlFor="name">Nome do Comprador:</label>
-                        <input
-                            required
-                            onChange={handleChange}
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Digite seu nome..."
-                            value={formData.name} />
+                    <FormContainer>
+                        <form onSubmit={reservarAssentos}>
+                            <label htmlFor="name">Nome do Comprador:</label>
+                            <input
+                                required
+                                onChange={handleChange}
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Digite seu nome..."
+                                value={formData.name} />
 
-                        <label htmlFor="cpf">CPF do Comprador:</label>
-                        <input
-                            required
-                            onChange={handleChange}
-                            type="text"
-                            id="cpf"
-                            name="cpf"
-                            placeholder="Digite seu CPF..."
-                            minLength="11"
-                            maxLength="11"
-                            value={formData.cpf} />
+                            <label htmlFor="cpf">CPF do Comprador:</label>
+                            <input
+                                required
+                                onChange={handleChange}
+                                type="text"
+                                id="cpf"
+                                name="cpf"
+                                placeholder="Digite seu CPF..."
+                                minLength="11"
+                                maxLength="11"
+                                value={formData.cpf} />
 
-                        <button type="submit">Reservar Assento(s)</button>
-                    </form>
-                </FormContainer>
+                            <button type="submit">Reservar Assento(s)</button>
+                        </form>
+                    </FormContainer>
 
-                <FooterContainer>
-                    <div>
-                        <img src={session.movie.posterURL} alt="poster" />
-                    </div>
-                    <div>
-                        <p>{session.movie.title}</p>
-                        <p>{session.day.weekday} - {session.day.date}</p>
-                    </div>
-                </FooterContainer>
+                    <FooterContainer>
+                        <div>
+                            <img src={session.movie.posterURL} alt="poster" />
+                        </div>
+                        <div>
+                            <p>{session.movie.title}</p>
+                            <p>{session.day.weekday} - {session.day.date}</p>
+                        </div>
+                    </FooterContainer>
 
-            </PageContainer>
+                </PageContainer>
+            </>
         )
-    
+
     return <Loading />
 }
 

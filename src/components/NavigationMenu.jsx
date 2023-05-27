@@ -1,10 +1,15 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 
 export default function NavigationMenu() {
+    const navigate = useNavigate();
+    const location = useLocation().pathname;
+
     return (
         <NavContainer>
-            <ion-icon
-                name="arrow-back-outline"></ion-icon>
+            {(location !== "/") && <ion-icon
+                onClick={() => navigate(-1)}
+                name="arrow-back-outline"></ion-icon>}
             CINEFLEX
         </NavContainer>
     );
@@ -26,9 +31,7 @@ const NavContainer = styled.div`
         text-decoration: none;
         color: #E8833A;
     }
-
     ion-icon {
-        display: block;
         color: black;
         position: absolute;
         left: 20px;
