@@ -16,7 +16,9 @@ export default function HomePage() {
         const promise = axios.get(URL_GET_MOVIES);
         // quando chegar resposta, atualiza estado dos movies
         promise.then((res) => setMovies(res.data));
-        promise.catch((err) => console.log(err.response));
+        promise.catch((err) => {
+            alert(`Ocorreu um erro "${err.response.data}" 
+            na comunicação com o servidor...`)});
     }, []);
 
     if (movies !== null)

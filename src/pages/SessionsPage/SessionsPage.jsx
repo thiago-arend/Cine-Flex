@@ -14,7 +14,9 @@ export default function SessionsPage() {
     useEffect(() => {
         const promise = axios.get(URL_GET_MOVIE_SESSIONS.replace("ID_DO_FILME", idFilme));
         promise.then((res) => setMovie(res.data));
-        promise.catch((err) => console.log(err.response));
+        promise.catch((err) => {
+            alert(`Ocorreu um erro "${err.response.data}" 
+            na comunicação com o servidor...`)});
     }, []);
 
     if (movie !== null)

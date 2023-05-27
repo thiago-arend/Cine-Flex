@@ -23,7 +23,9 @@ export default function SeatsPage() {
         promise.then((res) => {
             setSession(res.data);
         });
-         promise.catch((err) => console.log(err.response));
+        promise.catch((err) => {
+            alert(`Ocorreu um erro "${err.response.data}" 
+            na comunicação com o servidor...`)});
         */
         setSession(ASSENTOS)
     }, []);
@@ -87,7 +89,9 @@ export default function SeatsPage() {
             // altera a rota, enviando objeto
             navigate("/sucesso", { state: preparaObjetoSucesso() })
         });
-        promise.catch((err) => console.log(err.response));
+        promise.catch((err) => {
+            alert(`Ocorreu um erro "${err.response.data}" 
+            na comunicação com o servidor...`)});
     }
 
     if (session !== null)
