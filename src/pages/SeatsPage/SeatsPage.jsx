@@ -139,7 +139,7 @@ export default function SeatsPage() {
                             <input
                                 required
                                 onChange={handleChange}
-                                type="number"
+                                type="text"
                                 id="cpf"
                                 name="cpf"
                                 placeholder="Digite seu CPF..."
