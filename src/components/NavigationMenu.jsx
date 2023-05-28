@@ -7,9 +7,11 @@ export default function NavigationMenu() {
 
     return (
         <NavContainer>
-            {(location !== "/") && <ion-icon
-                onClick={() => navigate(-1)}
-                name="arrow-back-outline"></ion-icon>}
+            {
+                (location !== "/") && <ion-icon
+                    onClick={() => navigate(-1)}
+                    name="arrow-back-outline"></ion-icon>
+            }
             CINEFLEX
         </NavContainer>
     );

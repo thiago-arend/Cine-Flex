@@ -16,7 +16,7 @@ export default function SessionsPage() {
         promise.then((res) => setMovie(res.data));
         promise.catch((err) => {
             alert(`Ocorreu um erro "${err.response.data}" 
-            na comunicação com o servidor...`)});
+                na comunicação com o servidor...`)});
     }, []);
 
     if (movie !== null)

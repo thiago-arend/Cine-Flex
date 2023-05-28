@@ -18,7 +18,7 @@ export default function HomePage() {
         promise.then((res) => setMovies(res.data));
         promise.catch((err) => {
             alert(`Ocorreu um erro "${err.response.data}" 
-            na comunicação com o servidor...`)});
+                na comunicação com o servidor...`)});
     }, []);
 
     if (movies !== null)

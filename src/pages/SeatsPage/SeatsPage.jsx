@@ -5,7 +5,6 @@ import styled from "styled-components"
 import axios from "axios"
 import { URL_GET_SESSION_SEATS, URL_RESERVE_SEATS } from "../../apiConstants";
 import Loading from "../../components/Loading";
-import ASSENTOS from "../../mockAssentos";
 import NavigationMenu from "../../components/NavigationMenu";
 
 export default function SeatsPage() {
@@ -18,16 +17,12 @@ export default function SeatsPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        /*
         const promise = axios.get(URL_GET_SESSION_SEATS.replace("ID_DA_SESSAO", idSessao));
-        promise.then((res) => {
-            setSession(res.data);
-        });
+        promise.then((res) => setSession(res.data));
         promise.catch((err) => {
             alert(`Ocorreu um erro "${err.response.data}" 
-            na comunicação com o servidor...`)});
-        */
-        setSession(ASSENTOS)
+                na comunicação com o servidor...`)
+        });
     }, []);
 
     function selecionarAssento(id, disponivel) {
@@ -82,16 +77,14 @@ export default function SeatsPage() {
         }
 
         const promise = axios.post(URL_RESERVE_SEATS, reserva);
-        promise.then((res) => {
-            // preparar informações para o envio pela rota
-            preparaObjetoSucesso();
-
+        promise.then(() => {
             // altera a rota, enviando objeto
             navigate("/sucesso", { state: preparaObjetoSucesso() })
         });
         promise.catch((err) => {
             alert(`Ocorreu um erro "${err.response.data}" 
-            na comunicação com o servidor...`)});
+                na comunicação com o servidor...`)
+        });
     }
 
     if (session !== null)
@@ -103,19 +96,15 @@ export default function SeatsPage() {
 
                     <SeatsContainer>
                         {
-                            (session !== null)
-                                ?
-                                (session.seats.map(s => (
-                                    <SeatItem
-                                        onClick={() => selecionarAssento(s.id, s.isAvailable)}
-                                        isSelected={selectedSeats.includes(s.id)}
-                                        isAvailable={s.isAvailable ? true : false}
-                                        key={s.id} >
-                                        {s.name}
-                                    </SeatItem>
-                                )))
-                                :
-                                <Loading />
+                            (session.seats.map(s => (
+                                <SeatItem
+                                    onClick={() => selecionarAssento(s.id, s.isAvailable)}
+                                    isSelected={selectedSeats.includes(s.id)}
+                                    isAvailable={s.isAvailable ? true : false}
+                                    key={s.id} >
+                                    {s.name}
+                                </SeatItem>
+                            )))
                         }
                     </SeatsContainer>
 
@@ -150,7 +139,7 @@ export default function SeatsPage() {
                             <input
                                 required
                                 onChange={handleChange}
-                                type="text"
+                                type="number"
                                 id="cpf"
                                 name="cpf"
                                 placeholder="Digite seu CPF..."
