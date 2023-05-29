@@ -9,6 +9,7 @@ export default function NavigationMenu() {
         <NavContainer>
             {
                 (location !== "/") && <ion-icon
+                    data-test="go-home-header-btn"
                     onClick={() => navigate(-1)}
                     name="arrow-back-outline"></ion-icon>
             }

@@ -31,14 +31,14 @@ export default function SessionsPage() {
                             const { id, weekday, date, showtimes } = d;
 
                             return (
-                                <SessionContainer key={id}>
+                                <SessionContainer data-test="movie-day" key={id}>
                                     {weekday} - {date}
                                     <ButtonsContainer>
                                         {
                                             showtimes.map(st => {
                                                 return (
                                                     <Link to={`/assentos/${st.id}`} key={st.id} >
-                                                        <button>{st.name}</button>
+                                                        <button data-test="showtime">{st.name}</button>
                                                     </Link>
                                                 )
                                             })
@@ -49,7 +49,7 @@ export default function SessionsPage() {
                         })}
                     </div>
 
-                    <FooterContainer>
+                    <FooterContainer data-test="footer">
                         <div>
                             <img src={movie.posterURL} alt="poster" />
                         </div>

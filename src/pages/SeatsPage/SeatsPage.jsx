@@ -101,7 +101,8 @@ export default function SeatsPage() {
                                     onClick={() => selecionarAssento(s.id, s.isAvailable)}
                                     isSelected={selectedSeats.includes(s.id)}
                                     isAvailable={s.isAvailable ? true : false}
-                                    key={s.id} >
+                                    key={s.id}
+                                    data-test="seat" >
                                     {s.name}
                                 </SeatItem>
                             )))
@@ -133,7 +134,8 @@ export default function SeatsPage() {
                                 id="name"
                                 name="name"
                                 placeholder="Digite seu nome..."
-                                value={formData.name} />
+                                value={formData.name}
+                                data-test="client-name" />
 
                             <label htmlFor="cpf">CPF do Comprador:</label>
                             <input
@@ -145,13 +147,14 @@ export default function SeatsPage() {
                                 placeholder="Digite seu CPF..."
                                 minLength="11"
                                 maxLength="11"
-                                value={formData.cpf} />
+                                value={formData.cpf}
+                                data-test="client-cpf" />
 
-                            <button type="submit">Reservar Assento(s)</button>
+                            <button data-test="book-seat-btn" type="submit">Reservar Assento(s)</button>
                         </form>
                     </FormContainer>
 
-                    <FooterContainer>
+                    <FooterContainer data-test="footer">
                         <div>
                             <img src={session.movie.posterURL} alt="poster" />
                         </div>

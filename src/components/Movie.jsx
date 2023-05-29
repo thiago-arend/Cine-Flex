@@ -4,7 +4,7 @@ export default function Movie(props) {
     const {posterURL} = props;
 
     return (
-        <MovieContainer>
+        <MovieContainer data-test="movie">
             <img src={posterURL} alt="poster" />
         </MovieContainer>
     )
