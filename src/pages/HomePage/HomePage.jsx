@@ -23,7 +23,7 @@ export default function HomePage() {
 
     if (movies !== null)
         return <>
-            <NavigationMenu />
+            
             <PageContainer>
                 Selecione o filme
 

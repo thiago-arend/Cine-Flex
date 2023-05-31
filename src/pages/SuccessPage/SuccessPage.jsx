@@ -8,7 +8,7 @@ export default function SuccessPage() {
 
     return (
         <>
-            <NavigationMenu />
+            
             <PageContainer>
                 <h1>Pedido feito <br /> com sucesso!</h1>
 

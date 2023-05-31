@@ -22,7 +22,7 @@ export default function SessionsPage() {
     if (movie !== null)
         return (
             <>
-                <NavigationMenu />
+                
                 <PageContainer>
 
                     Selecione o horário

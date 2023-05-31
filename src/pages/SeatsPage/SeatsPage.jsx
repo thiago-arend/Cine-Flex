@@ -90,7 +90,7 @@ export default function SeatsPage() {
     if (session !== null)
         return (
             <>
-                <NavigationMenu />
+                
                 <PageContainer>
                     Selecione o(s) assento(s)
 
