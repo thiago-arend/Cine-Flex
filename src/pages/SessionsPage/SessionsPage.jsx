@@ -68,6 +68,7 @@ export default function SessionsPage() {
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     font-family: 'Roboto';
     font-size: 24px;
     text-align: center;
@@ -82,7 +83,7 @@ const PageContainer = styled.div`
 const SessionContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     font-family: 'Roboto';
     font-size: 20px;
     color: #293845;
@@ -90,11 +91,10 @@ const SessionContainer = styled.div`
 `
 const ButtonsContainer = styled.div`
     display: flex;
+    min-width: calc(78%);
+    justify-content: space-between;
     flex-direction: row;
     margin: 20px 0;
-    button {
-        margin-right: 20px;
-    }
     a {
         text-decoration: none;
     }
